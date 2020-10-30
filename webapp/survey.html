@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>survey_demo</title>
+    <style>
+        /*不可用*/
+        .activeColor{
+            color:#000608;
+        }
+        /*不可用*/
+        .disableColor{
+            color:#ccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <survey :surveys="surveyList" v-model="activeKey" :sex="sex" :hobby="hobby" :introduce="introduce" :active-color="activeColor" :disable-color="disableColor">
+            <template slot="surveyTitle" scope="props">
+                <div v-if="props.surveyId == activeKey">
+                    <span v-text="props.surveyId"></span>
+                    <span>.</span>
+                    <span v-text="props.surveyTitle"></span>
+                </div>
+                <div v-if="props.surveyId == activeKey">
+                    <div v-if="props.surveyType == 'radio'" v-for="sexVal in props.surveyValue">
+                        <input :id="sexVal" type="radio" v-model="sex" :value="sexVal"><label :for="sexVal" v-text="sexVal"></label>
+                    </div>
+                    <div v-if="props.surveyType == 'checkbox'" v-for="hobbyVal in props.surveyValue">
+                        <input :id="hobbyVal" type="checkbox" v-model="hobby" :value="hobbyVal"><label :for="hobbyVal" v-text="hobbyVal"></label>
+                    </div>
+                    <div v-if="props.surveyType == 'textarea'">
+                        <textarea :id="props.surveyId" v-model="introduce" placeholder="不少于100字"></textarea>
+                    </div>
+                </div>
+            </template>
+        </survey>
+    </div>
+    <script src="vue.js"></script>
+    <script src="survey.js"></script>
+    <script src="mybutton.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data:{
+                activeKey:1,
+                sex:'',
+                hobby:[],
+                introduce:'',
+                surveyList:[
+                    {
+                        id:1,
+                        type:'radio',
+                        topic:'sex',
+                        title:'请问您的性别是什么?',
+                        value:['男','女','保留']
+                    },
+                    {
+                        id:2,
+                        type:'checkbox',
+                        topic:'hobby',
+                        title:'请选择您的兴趣爱好?',
+                        value:['看书','游泳','跑步','看电影','听音乐']
+                    },
+                    {
+                        id:3,
+                        type:'textarea',
+                        topic:'introduce',
+                        title:'请介绍一下自己',
+                        value:''
+                    }
+                ],
+                activeColor:'activeColor',
+                disableColor:'disableColor',
+            },
+           watch:{
+                activeKey:function (val) {
+                    console.log("父类value："+val)
+                }
+           }
+ 
+        })
+    </script>
+</body>
+</html>
